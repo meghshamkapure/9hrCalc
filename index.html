@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #121212;
+      color: #ffffff;
+    }
+    .container {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    }
+    input {
+      padding: 10px;
+      margin: 5px 0;
+      font-size: 16px;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background-color: #2a2a2a;
+      color: #ffffff;
+      width: 250px; /* Adjusted width */
+      box-sizing: border-box; /* Ensures padding doesn't affect the width */
+    }
+    button {
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .result {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Calculate Time 9 Hours Later</h2>
+    <label for="timeInput">Enter Time (HH:MM:SS):</label>
+    <input type="text" id="timeInput" placeholder="HH:MM:SS" oninput="calculateTime()">
+    <button onclick="setCurrentTime()">Set Current Time</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function calculateTime() {
+      const input = document.getElementById('timeInput').value;
+      const result = document.getElementById('result');
+
+      // Validate input format
+      const timeRegex = /^([0-1]?\d|2[0-3]):([0-5]\d):([0-5]\d)$/;
+      if (!timeRegex.test(input)) {
+        result.textContent = "Please enter a valid time in HH:MM:SS format.";
+        result.style.color = "#ff6347";
+        return;
+      }
+
+      // Parse the input time
+      const [hours, minutes, seconds] = input.split(':').map(Number);
+
+      // Create a Date object for the input time
+      const inputDate = new Date();
+      inputDate.setHours(hours, minutes, seconds, 0);
+
+      // Create a Date object for the time 9 hours later
+      const futureDate = new Date(inputDate);
+      futureDate.setHours(futureDate.getHours() + 9);
+
+      // Format the result in 24-hour clock
+      const newTime24 = futureDate.toTimeString().split(' ')[0];
+      result.textContent = `Time 9 hours later: ${newTime24}`;
+      result.style.color = "#32cd32";
+    }
+
+    function setCurrentTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('timeInput').value = `${hours}:${minutes}:${seconds}`;
+      calculateTime();
+    }
+  </script>
+</body>
+</html>
+
